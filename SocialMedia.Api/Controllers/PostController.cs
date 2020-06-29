@@ -5,6 +5,7 @@ namespace SocialMedia.Api.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Core.Interfaces;
     using System.Threading.Tasks;
+    using Core.Entities;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -27,6 +28,13 @@ namespace SocialMedia.Api.Controllers
         public async Task<IActionResult> GetPost(int id)
         {
             var post = await postRepository.GetPost(id);
+            return Ok(post);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(Post post)
+        {
+            await postRepository.InsertPost(post);
             return Ok(post);
         }
     }
