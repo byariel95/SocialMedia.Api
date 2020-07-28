@@ -11,6 +11,8 @@ namespace SocialMedia.Api
     using Infrastructure.Repositories;
     using Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
+    using AutoMapper;
+    using System;
 
     public class Startup
     {
@@ -24,6 +26,9 @@ namespace SocialMedia.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // added automapper and implement all mappings in automapper profile
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             // ignore indentity with circle reference in models
             services.AddControllers().AddNewtonsoftJson(options => 
             {
