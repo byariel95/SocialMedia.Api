@@ -77,7 +77,11 @@ namespace SocialMedia.Api.Controllers
                  Image = postDto.Image,
                  UserId = postDto.UserId
              };*/
+
+
+            
             await postRepository.InsertPost(post);
+            //TODO convert again to return a dto 
             return Ok(post);
         }
     }

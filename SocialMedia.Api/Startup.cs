@@ -13,6 +13,7 @@ namespace SocialMedia.Api
     using Microsoft.EntityFrameworkCore;
     using AutoMapper;
     using System;
+    using SocialMedia.Infrastructure.Filters;
 
     public class Startup
     {
@@ -30,15 +31,25 @@ namespace SocialMedia.Api
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // ignore indentity with circle reference in models
-            services.AddControllers().AddNewtonsoftJson(options => 
+            services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            })
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true; // disable automatic validation from api controller 
             });
             //conection to database
             services.AddDbContext<SocialMediaContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SocialMedia")));
 
             //add injection of dependency
             services.AddTransient<IPostRepository, PostRepository>();
+
+            //register filter in global mode
+            services.AddMvc( options => {
+
+                options.Filters.Add<ValidationFilter>();
+            }); 
 
         }
 
